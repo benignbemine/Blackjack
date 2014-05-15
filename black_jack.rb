@@ -15,11 +15,11 @@ class Player
   end
 
   def show_cards
+
     info[:cards].each do |a|
-      return a[1][0].to_s + " of " + a[0]
+      puts "You currently have the #{a[1]} of #{a[0]}"
     end
   end
-
 end
 
 class Deck
@@ -37,7 +37,7 @@ class Deck
   end
 
   def deal
-    cards.pop
+    cards.pop.flatten
   end
 
 end
@@ -61,7 +61,9 @@ computer.info[:cards]<<live_deck.deal
 gambler.info[:cards]<<live_deck.deal
 computer.info[:cards]<<live_deck.deal
 
-say("Your Cards are: " + gambler.show_cards)
+gambler.show_cards
+
+
 
 
 
