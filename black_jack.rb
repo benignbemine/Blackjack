@@ -81,7 +81,7 @@ class Player
       if index == 0
         next
       end
-      puts "The #{info[:name]} currently holds the #{a.name} of #{a.suit}"
+      puts "#{info[:name]} currently holds the #{a.name} of #{a.suit}"
     end
   end
 ###########
@@ -126,73 +126,90 @@ class Player
 end
 
 #/////////// StartUp ////////////////////
-
+play_game = true
 puts "------Hi! Lets play BlackJack!------"
-say("Please enter your name")
-gambler = Player.new(gets.chomp)
-computer = Player.new
-
-say("Hi #{gambler.info[:name]}! I hope you're ready to lose some money. I'm dealing! Lets see the cards:")
 
 # #/////////// GamePlay ////////////////////
 
-live_deck = Deck.new
-gambler.info[:cards]<<live_deck.cards.pop
-computer.info[:cards]<<live_deck.cards.pop
-gambler.info[:cards]<<live_deck.cards.pop
-computer.info[:cards]<<live_deck.cards.pop
-gambler.show_player_cards
-computer.show_dealer_cards
-gambler.dealing_with_aces
-# #//////////////Player Interaction ///////////////
-gambler_bust = false
-computer_bust = false
+while play_game == true
+  say("Please enter your name")
+  gambler = Player.new(gets.chomp)
+  computer = Player.new
 
-say("Would you like to Hit or Stay? Type 'H' or 'S' until you have finalized your hand!")
-while hit = gets.chomp
-  if hit == "H" || hit == "h"
-    gambler.info[:cards]<<live_deck.cards.pop
-    gambler.show_player_cards
-    gambler.dealing_with_aces
-    if gambler.value>21
-      gambler_bust = true
+  say("Hi #{gambler.info[:name]}! I hope you're ready to lose some money. I'm dealing! Lets see the cards:")
+
+  live_deck = Deck.new
+  gambler.info[:cards]<<live_deck.cards.pop
+  computer.info[:cards]<<live_deck.cards.pop
+  gambler.info[:cards]<<live_deck.cards.pop
+  computer.info[:cards]<<live_deck.cards.pop
+  gambler.show_player_cards
+  computer.show_dealer_cards
+  gambler.dealing_with_aces
+  # #//////////////Player Interaction ///////////////
+  gambler_bust = false
+  computer_bust = false
+
+  say("Would you like to Hit or Stay? Type 'H' or 'S' until you have finalized your hand!")
+  while hit = gets.chomp
+    if hit == "H" || hit == "h"
+      gambler.info[:cards]<<live_deck.cards.pop
+      gambler.show_player_cards
+      gambler.dealing_with_aces
+      if gambler.value>21
+        gambler_bust = true
+        break
+      elsif gambler.value<21
+        say("Hit Again????? #{gambler.info[:name]}, you prolly should. Type 'H' or 'S'")
+      end
+    elsif hit == "S" || hit == "s"
       break
-    elsif gambler.value<21
-      say("Hit Again????? #{gambler.info[:name]}, you prolly should. Type 'H' or 'S'")
-    end
-  elsif hit == "S" || hit == "s"
-    break
-  else
-    say("C'mon #{gambler.info[:name]}! Invalid Response: Please choose 'H' or 'S'")
-  end
-end
-
-#//////// After the player hits. ///////////
-
-if gambler_bust == false
-  while computer.value < 17
-    computer.info[:cards]<<live_deck.cards.pop
-    if computer.value > 21
-      computer_bust = true
+    else
+      say("C'mon #{gambler.info[:name]}! Invalid Response: Please choose 'H' or 'S'")
     end
   end
-  if computer_bust == false
-    computer.show_player_cards
-    if gambler.value > computer.value
-      puts("----You have #{gambler.value}, The Computer has #{computer.value}----")
-      say("YOU WIN!!!!!!!!!!!!!! You win nothing because I haven't added betting functionality to this program.")
+
+  #//////// After the player hits. ///////////
+
+  if gambler_bust == false
+    while computer.value < 17
+      computer.info[:cards]<<live_deck.cards.pop
+      if computer.value > 21
+        computer_bust = true
+      end
+    end
+    if computer_bust == false
+      computer.show_player_cards
+      if gambler.value > computer.value
+        puts("----You have #{gambler.value}, The Computer has #{computer.value}----")
+        say("YOU WIN!!!!!!!!!!!!!! You win nothing because I haven't added betting functionality to this program.")
+      else
+        puts("----You have #{gambler.value}, The Computer has #{computer.value}----")
+        say("You LOSSSSSEEEEEEEEEEEEEE")
+      end
     else
       puts("----You have #{gambler.value}, The Computer has #{computer.value}----")
-      say("You LOSSSSSEEEEEEEEEEEEEE")
+      say("The Computer Busted, You WINNNNNNNNNNN")
     end
   else
     puts("----You have #{gambler.value}, The Computer has #{computer.value}----")
-    say("The Computer Busted, You WINNNNNNNNNNN")
+    say("Nice job #{gambler.info[:name]}, YOU BUSTED! I'm not surprised")
   end
-else
-  puts("----You have #{gambler.value}, The Computer has #{computer.value}----")
-  say("Nice job #{gambler.info[:name]}, YOU BUSTED! I'm not surprised")
+
+  say("Would you like to play again? Type 'Y' or 'N'")
+
+  while continue = gets.chomp
+    if continue == "Y" || continue == "y"
+    break
+    elsif continue == "N"
+    play_game = false
+    else
+      say("Type a valid response!!! Either 'Y' or 'N'")
+    end
+  end
 end
+
+
 
 
 
