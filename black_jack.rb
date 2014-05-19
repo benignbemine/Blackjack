@@ -201,13 +201,15 @@ while play_game == true
   while continue = gets.chomp
     if continue == "Y" || continue == "y"
     break
-    elsif continue == "N"
+    elsif continue == "N" || continue == 'n'
     play_game = false
+    break
     else
       say("Type a valid response!!! Either 'Y' or 'N'")
     end
   end
 end
+say("Thanks for playing!")
 
 
 
